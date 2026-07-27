@@ -1,0 +1,8 @@
+node_modules/
+vbpl_data_production.json
+tai_ve_html.txt
+van_ban_goc_html.txt
+thuoc_tinh_html_2.txt
+network_requests.txt
+screenshot.png
+.pm2/

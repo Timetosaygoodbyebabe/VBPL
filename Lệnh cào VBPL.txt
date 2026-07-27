@@ -1,0 +1,40 @@
+// ==========================================
+// HƯỚNG DẪN CÀO DỮ LIỆU VBPL CHUYÊN NGHIỆP
+// ==========================================
+
+// 1. CÀI ĐẶT THƯ VIỆN NẾU CHƯA CÓ
+// Chạy lệnh này nếu báo lỗi thiếu thư viện axios hoặc puppeteer
+npm install puppeteer axios
+
+// ------------------------------------------
+// PHASE 1: CHẠY LẤY ĐƯỜNG DẪN (CHẠY 1 LẦN DUY NHẤT)
+// Kịch bản: Máy sẽ tự lật 395 trang, bóc tất cả ~3942 URL lưu vào file danhsach_vbpl.csv
+// Chạy lệnh:
+node get_links.js
+
+// ------------------------------------------
+// PHASE 2: CÀO DỮ LIỆU CHI TIẾT
+// Kịch bản: Máy đọc file CSV ở Phase 1, chui vào từng link cào thông tin, gom 30 bài ném qua Webhook n8n và lưu backup ra file json.
+
+// 2a. Chạy thủ công (Bật trình duyệt lên xem máy cày, tắt terminal là dừng)
+node scrape_vbpl.js
+
+// 2b. CHẠY NGẦM VỚI PM2 (KHUYÊN DÙNG CHO CÀO SỐ LƯỢNG LỚN)
+// Cài PM2 nếu chưa có:
+npm install pm2 -g
+
+// Chạy lệnh cào dưới nền (tự khởi động lại nếu lỗi):
+pm2 start scrape_vbpl.js --name "vbpl-scraper" --no-autorestart
+
+// Xem log để biết máy cày tới đâu:
+pm2 logs vbpl-scraper --lines 100
+
+// Dừng cào:
+pm2 stop vbpl-scraper
+
+// Xoá tiến trình cào:
+pm2 delete vbpl-scraper
+
+// --- LƯU Ý ---
+// - Nếu muốn dừng Phase 2 và cào lại từ đầu: Hãy xoá file "vbpl_data_production.json"
+// - Hiện tại đang để headless: false (hiện trình duyệt). Nếu muốn chạy bằng PM2 ổn định nhất, hãy vào file scrape_vbpl.js sửa headless: false thành headless: "new".
