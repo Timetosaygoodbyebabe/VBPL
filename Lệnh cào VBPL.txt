@@ -30,6 +30,12 @@ pm2 start scrape_vbpl.js --name "vbpl-scraper" --no-autorestart
 // Kịch bản: Tự động kích hoạt cào dữ liệu vào lúc 0h00 Thứ Hai hàng tuần:
 pm2 start scrape_vbpl.js --name "vbpl-scraper-weekly" --cron-restart="0 0 * * 1" --no-autorestart
 
+// 2d. LƯU TIẾN TRÌNH (CHỐNG SẬP/REBOOT SERVER)
+// Lưu lại danh sách đang chạy để nếu Server có bị khởi động lại, PM2 sẽ tự động chạy tiếp:
+pm2 save
+pm2 startup
+// LƯU Ý: Khi chạy 'pm2 startup', nó sẽ in ra một dòng lệnh dài, bạn copy dòng lệnh đó dán vào terminal chạy thêm 1 lần nữa là xong.
+
 // Xem log để biết máy cày tới đâu:
 pm2 logs vbpl-scraper --lines 100
 
