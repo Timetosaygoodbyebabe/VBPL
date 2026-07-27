@@ -23,8 +23,12 @@ node scrape_vbpl.js
 // Cài PM2 nếu chưa có:
 npm install pm2 -g
 
-// Chạy lệnh cào dưới nền (tự khởi động lại nếu lỗi):
+// Chạy lệnh cào dưới nền (chạy 1 lần):
 pm2 start scrape_vbpl.js --name "vbpl-scraper" --no-autorestart
+
+// 2c. CHẠY CÀO TỰ ĐỘNG THEO LỊCH (CRON JOB)
+// Kịch bản: Tự động kích hoạt cào dữ liệu vào lúc 0h00 Thứ Hai hàng tuần:
+pm2 start scrape_vbpl.js --name "vbpl-scraper-weekly" --cron-restart="0 0 * * 1" --no-autorestart
 
 // Xem log để biết máy cày tới đâu:
 pm2 logs vbpl-scraper --lines 100
